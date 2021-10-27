@@ -91,7 +91,7 @@ jobs:
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
           # source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/, backend/config/, backend/manage.py
-          source: backend/, infra/
+          source: data/, infra/, infra/docker-compose.prod.yml, infra/nginx.prod.conf
           target: .
           overwrite: true
       - name: executing remote ssh commands to deploy
