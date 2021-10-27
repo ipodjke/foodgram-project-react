@@ -17,7 +17,11 @@ gunicorn = "*"
 [dev-packages]
 flake8 = "*"
 flake8-quotes = "*"
-isort = "*"
+pep8-naming = "*"
+flake8-broken-line = "*"
+flake8-return = "*"
+flake8-isort = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"
