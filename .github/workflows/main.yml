@@ -76,7 +76,6 @@ jobs:
           host: ${{ secrets.CLOUD_HOST }}
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
-          # source: .
           source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/
           target: .
           overwrite: true
@@ -86,11 +85,6 @@ jobs:
           host: ${{ secrets.CLOUD_HOST }}
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
-          # script: |
-          #   cd infra
-          #   sudo docker-compose -f docker-compose.prod.yml stop $(sudo docker ps -a -q)
-          #   sudo docker-compose -f docker-compose.prod.yml rm -f
-          #   sudo docker-compose -f docker-compose.prod.yml up -d
           script: |
             sudo rm -Rf ./backend/envfiles/.env.prod
             mkdir -p ./backend/envfiles/
