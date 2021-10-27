@@ -87,9 +87,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo rm -Rf backend
-           
-            sudo mkdir "backend/envfiles"
-            sudo touch backend\envfiles\.env.prod
+
+            sudo mkdir backend/envfiles
+            sudo touch backend/envfiles/.env.prod
             echo "DEBUG=${{ secrets.DEBUG }}" >> /backend/envfiles/.env.prod
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> /backend/envfiles/.env.prod
             echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> /backend/envfiles/.env.prod
