@@ -77,7 +77,7 @@ jobs:
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
           # source: .
-          source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod, data/
+          source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/
           target: .
           overwrite: true
       - name: executing remote ssh commands to deploy
@@ -92,7 +92,7 @@ jobs:
           #   sudo docker-compose -f docker-compose.prod.yml rm -f
           #   sudo docker-compose -f docker-compose.prod.yml up -d
           script: |
-            sudo rm -Rf backend
+            sudo rm -Rf ./backend/envfiles/.env.prod
             mkdir -p ./backend/envfiles/
             touch ./backend/envfiles/.env.prod
             echo "DEBUG=${{ secrets.DEBUG }}" >> ./backend/envfiles/.env.prod
@@ -110,9 +110,7 @@ jobs:
             echo "DJANGO_SU_PASSWORD=${{ secrets.DJANGO_SU_PASSWORD }}" >> ./backend/envfiles/.env.prod
             echo "DJANGO_SU_FIRST_NAME=${{ secrets.DJANGO_SU_FIRST_NAME }}" >> ./backend/envfiles/.env.prod
             echo "DJANGO_SU_LAST_NAME=${{ secrets.DJANGO_SU_LAST_NAME }}" >> ./backend/envfiles/.env.prod
-            rm -f docker-entrypoint.prod.sh
-            cd infra
-            
+            cd infra            
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
             sudo docker-compose -f docker-compose.prod.yml stop $(sudo docker ps -a -q)
