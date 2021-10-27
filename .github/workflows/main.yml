@@ -89,7 +89,7 @@ jobs:
             sudo rm -Rf backend
             sudo mkdir -p ./backend/envfiles/
             sudo touch ./backend/envfiles/.env.prod
-            echo "DEBUG=${{ secrets.DEBUG }}" >> ./backend/envfiles/.env.prod
+            echo "DEBUG=${{ secrets.DEBUG }}" >> backend/envfiles/.env.prod
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> ./backend/envfiles/.env.prod
             echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> ./backend/envfiles/.env.prod
             echo "DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}" >> ./backend/envfiles/.env.prod
