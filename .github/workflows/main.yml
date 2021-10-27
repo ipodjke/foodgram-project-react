@@ -77,7 +77,6 @@ jobs:
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
           source: infra/docker-compose.prod.yml, infra/nginx.prod.conf
-          target: infra
           overwrite: true
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master 
