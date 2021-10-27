@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build_and_push_front_to_docker_hub, build_and_push_back_to_docker_hub]
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@mv2
       - name: copy docker-compose.prod.yml and nginx.prod.conf to remote server
         uses: appleboy/scp-action@master
         with:
@@ -91,7 +91,7 @@ jobs:
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
           # source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/, backend/config/, backend/manage.py
-          source: backend/
+          source: backend/, infra/
           target: .
           overwrite: true
       - name: executing remote ssh commands to deploy
