@@ -32,5 +32,7 @@ jobs:
         # python manage.py test
         # pytest
         run: |
+          pwd
+          ls
           python -m flake8
          
