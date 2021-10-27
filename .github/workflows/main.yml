@@ -88,9 +88,9 @@ jobs:
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
-            sudo rm -Rf /backend
-            sudo mkdir /backend/envfiles
-            sudo touch /backend/envfiles/.env.prod
+            sudo rm -Rf backend
+            sudo mkdir backend/envfiles
+            sudo touch backend/envfiles/.env.prod
             echo "DEBUG=${{ secrets.DEBUG }}" >> /backend/envfiles/.env.prod
             echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> /backend/envfiles/.env.prod
             echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> /backend/envfiles/.env.prod
