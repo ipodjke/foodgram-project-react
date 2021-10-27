@@ -86,8 +86,6 @@ jobs:
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
             sudo rm -Rf backend
             sudo mkdir backend/
             sudo mkdir backend/envfiles/
@@ -108,6 +106,8 @@ jobs:
             echo "DJANGO_SU_FIRST_NAME=${{ secrets.DJANGO_SU_FIRST_NAME }}" >> /backend/envfiles/.env.prod
             echo "DJANGO_SU_LAST_NAME=${{ secrets.DJANGO_SU_LAST_NAME }}" >> /backend/envfiles/.env.prod
             cd infra
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
             sudo docker-compose stop $(sudo docker ps -a -q)
             sudo docker-compose rm -f
             sudo docker-compose -f docker-compose.prod.yml up -d 
