@@ -16,7 +16,7 @@ services:
       - ./nginx.prod.conf:/etc/nginx/conf.d/default.conf
       - ../frontend/build:/usr/share/nginx/html/
       - static_value:/var/html/static_django/
-      - media_value:/var/html/media_django/
+      - media_value:/var/html/media/
     depends_on:
       - web
     networks: 
@@ -42,7 +42,7 @@ services:
       - ../backend:/usr/src/app/web
       - ../data:/usr/src/app/data
       - static_value:/usr/src/app/web/static_django/
-      - media_value:/usr/src/app/web/media_django/
+      - media_value:/usr/src/app/web/media/
     env_file:
       - ../backend/envfiles/.env.prod
     depends_on:

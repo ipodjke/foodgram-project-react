@@ -1,5 +1,4 @@
 import datetime
-import json
 
 from django.contrib.auth import get_user_model
 from drf_extra_fields.fields import Base64ImageField
@@ -10,7 +9,6 @@ from rest_framework.generics import get_object_or_404
 from tags.models import Tag
 from tags.serializers import TagSerializer
 from users.serializers import UserSerializer
-
 from utils.generalizing_functions import check_the_occurrence
 
 from .models import IngredientsList, Recipe
@@ -58,9 +56,8 @@ class RecipeSerializer(serializers.ModelSerializer):
 
 
 class CreateRecipeSerializer(serializers.ModelSerializer):
-    image = Base64ImageField()
+    image = Base64ImageField(max_length=None, use_url=True)
     tags = serializers.ListField(
-        default=[],
         child=serializers.IntegerField(),
     )
     ingredients = serializers.ListField(
@@ -94,10 +91,12 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         tags = self._get_tags(validated_data)
         ingredients = self._get_ingredients(validated_data)
 
-        instance.name = validated_data.get('name')
-        instance.text = validated_data.get('text')
-        instance.cooking_time = validated_data.get('cooking_time')
-        instance.image = validated_data.get('image')
+        instance.name = validated_data.get('name', instance.name)
+        instance.text = validated_data.get('text', instance.text)
+        instance.cooking_time = validated_data.get('cooking_time',
+                                                   instance.cooking_time)
+        instance.image = validated_data.get('image', instance.image)
+        instance.save()
 
         instance.tags.clear()
         instance.tags.add(*tags)
@@ -125,14 +124,9 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         """
         Сформировать список ингредиентов.
         """
-        encoded_json_ingredients = list(
-                                        map(json.loads,
-                                            validated_data.pop('ingredients'))
-                                    )
-
         return [{'object': get_object_or_404(Ingredient, pk=ingredient['id']),
-                'amount': ingredient['amount']}
-                for ingredient in encoded_json_ingredients]
+                'amount': int(ingredient['amount'])}
+                for ingredient in validated_data.pop('ingredients')]
 
     def _add_ingredients_to_recipe(self,
                                    recipe: object,

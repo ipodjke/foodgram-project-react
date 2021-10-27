@@ -86,11 +86,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-MEDIA_URL = '/media_django/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_django')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-STATIC_URL = '/static_django/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_django')
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 SITE_ID = 1
 
@@ -106,8 +106,9 @@ DJOSER = {
         'current_user': 'users.serializers.UserSerializer',
     },
     'PERMISSIONS': {
-        'user': ['rest_framework.permissions.AllowAny'],
+        'user': ['rest_framework.permissions.IsAuthenticated'],
         'user_list': ['rest_framework.permissions.AllowAny'],
+        'user_detail': ['rest_framework.permissions.AllowAny'],
     },
     'HIDE_USERS': False,
 }
@@ -116,9 +117,6 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_PAGINATION_CLASS': 'utils.paginations.PageNumberWithPageSizeControllPagination',
     'PAGE_SIZE': 20,

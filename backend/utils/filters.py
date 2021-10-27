@@ -41,15 +41,17 @@ class IsFavoritedFilterBackend(BaseFilterBackend):
     """
     Фильтр для вывода избраных рецептов пользователя.
 
-    Подерживает установленную пагинацию с ее фильтрами.
-    Приорететней над базовыми drf фильтрами.
+    Интегрирована с другими фильтрами и пагинацией.
     """
     def filter_queryset(self, request, queryset, view):
         path_name = settings.PATH_PARAM_NAMES.get('favorited')
 
-        if (not request.user.is_anonymous
-                and request.query_params.get(path_name, '0') == '1'):
-            return request.user.marked_recipes.fovorited_recipe.all()
+        if request.query_params.get(path_name) == 'true':
+            try:
+                manager = getattr(request.user, 'marked_recipes')
+                return manager.fovorited_recipe.filter(pk__in=queryset)
+            except AttributeError:
+                return manager.none()
 
         return queryset
 
@@ -64,17 +66,19 @@ class IsDownloadFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         path_name = settings.PATH_PARAM_NAMES.get('shopping_cart')
 
-        if (not request.user.is_anonymous
-                and request.query_params.get(path_name, '0') == '1'):
-            return request.user.marked_recipes.recipe_for_download.all()
+        if request.query_params.get(path_name) == 'true':
+            try:
+                manager = getattr(request.user, 'marked_recipes')
+                return manager.recipe_for_download.all()
+            except AttributeError:
+                return manager.none()
 
         return queryset
 
 
 class RecipeFilterSet(FilterSet):
     """
-    Фильтерсет для переопределения поведения фильтрации
-    поля slug.
+    Фильтерсет для кастомной фильтрации.
 
     Переопределено поведение фильтрации с поля id на slug при
     фильтрации по tags.

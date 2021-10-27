@@ -5,12 +5,14 @@ from django.http import HttpResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
-
 from utils.filters import (IsDownloadFilterBackend, IsFavoritedFilterBackend,
                            RecipeFilterSet)
 from utils.generalizing_functions import (check_the_occurrence,
                                           send_bad_request_response)
+from utils.permissions import IsOwnerOrReadOnly
 
 from .models import MarkedUserRecipes, Recipe
 from .srializers import (CreateRecipeSerializer, RecipeSerializer,
@@ -23,23 +25,25 @@ class RecipeViewSet(viewsets.ModelViewSet):
     filter_backends = [
         DjangoFilterBackend,
         IsFavoritedFilterBackend,
-        IsDownloadFilterBackend
+        IsDownloadFilterBackend,
     ]
     filterset_class = RecipeFilterSet
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
 
     def get_serializer_class(self):
-        if self.action == 'create' or self.action == 'update':
+        if (self.action == 'create'
+                or self.action == 'update' or self.action == 'partial_update'):
             return CreateRecipeSerializer
         return super().get_serializer_class()
 
-    def partial_update(self, request, *args, **kwargs):
-        return Response(
-            {'detail': 'Метод PATCH не разрешен.'},
-            status=status.HTTP_405_METHOD_NOT_ALLOWED
-        )
+    # def partial_update(self, request, *args, **kwargs):
+    #     return Response(
+    #         {'detail': 'Метод PATCH не разрешен.'},
+    #         status=status.HTTP_405_METHOD_NOT_ALLOWED
+    #     )
 
-    @action(detail=True, url_path='favorite',
-            serializer_class=ShortRecipeSerializer)
+    @action(detail=True, serializer_class=ShortRecipeSerializer,
+            url_path='favorite', permission_classes=[IsAuthenticated])
     def mark_favorite_recipe(self, request, id=None, *args, **kwargs):
         return self._mark_recipes(request, id=None, *args, **kwargs)
 
@@ -47,8 +51,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def delete_favorite_recipe(self, request, id=None, *args, **kwargs):
         return self._delete_mark_recipes(request, id=None, *args, **kwargs)
 
-    @action(detail=True, url_path='shopping_cart',
-            serializer_class=ShortRecipeSerializer)
+    @action(detail=True, serializer_class=ShortRecipeSerializer,
+            url_path='shopping_cart', permission_classes=[IsAuthenticated])
     def mark_download_recipe(self, request, id=None, *args, **kwargs):
         return self._mark_recipes(request, id=None, *args, **kwargs)
 
@@ -126,7 +130,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, url_path='download_shopping_cart')
+    @action(detail=False, url_path='download_shopping_cart',
+            permission_classes=[IsAuthenticated])
     def download_shopping_cart(self, request, *args, **kwargs):
         shopping_cart = request.user.marked_recipes.recipe_for_download.all()
         ingredient_list = self._get_ingredient_list(shopping_cart)

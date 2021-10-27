@@ -10,3 +10,4 @@ class IngredientsViewSet(ListRetriveViewSet):
     serializer_class = IngredientSerializer
     filter_backends = [DoubleSearchBackend]
     search_fields = ['^name', '$name']
+    pagination_class = None

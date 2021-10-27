@@ -5,7 +5,6 @@ from djoser.serializers import \
 from djoser.serializers import UserSerializer as DjoserUserSerializer
 from recipes.models import Recipe
 from rest_framework import serializers
-
 from utils.generalizing_functions import check_the_occurrence
 
 User = get_user_model()
