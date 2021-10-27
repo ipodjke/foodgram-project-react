@@ -24,15 +24,15 @@ jobs:
           python-version: 3.8
       - name: Install dependencies
         run: | 
+          pwd
+          ls
           python -m pip install --upgrade pip 
           pip install pipenv
-          pipenv install --system --deploy --dev
+          pipenv install --dev
       - name: Test with flake8 (django tests and pytest )
         # обязательно появятся в версии 2.0
         # python manage.py test
         # pytest
         run: |
-          pwd
-          ls
-          python -m flake8
+          flake8
          
