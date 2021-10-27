@@ -2,9 +2,10 @@ version: '3.3'
 
 services:
   nginx:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile.prod
+    image: ipodjke/frontend_foodgram:latest
+    # build:
+    #   context: ../frontend
+    #   dockerfile: Dockerfile.prod
     ports:
       - 80:80
     volumes:
@@ -26,9 +27,10 @@ services:
       - foodgram_network
 
   web:
-    build:
-      context: ../backend
-      dockerfile: Dockerfile.prod
+    image: ipodjke/backend_foodgram:latest
+    # build:
+    #   context: ../backend
+    #   dockerfile: Dockerfile.prod
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - ../backend:/usr/src/app/web
