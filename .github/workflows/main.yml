@@ -90,7 +90,7 @@ jobs:
           host: ${{ secrets.CLOUD_HOST }}
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/
+          source: infra/docker-compose.prod.yml, infra/nginx.prod.conf, backend/docker-entrypoint.prod.sh, data/, backend/config/, backend/manage.py
           target: .
           overwrite: true
       - name: executing remote ssh commands to deploy
@@ -119,7 +119,7 @@ jobs:
             echo "DJANGO_SU_FIRST_NAME=${{ secrets.DJANGO_SU_FIRST_NAME }}" >> ./backend/envfiles/.env.prod
             echo "DJANGO_SU_LAST_NAME=${{ secrets.DJANGO_SU_LAST_NAME }}" >> ./backend/envfiles/.env.prod
             cd infra            
-            sudo docker-compose -f docker-compose.prod.yml stop $(sudo docker ps -a -q)
+            sudo docker-compose -f docker-compose.prod.yml stop
             sudo docker-compose -f docker-compose.prod.yml rm -f
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
