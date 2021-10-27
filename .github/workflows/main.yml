@@ -76,8 +76,8 @@ jobs:
           host: ${{ secrets.CLOUD_HOST }}
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: .
-          # source: infra/docker-compose.prod.yml, infra/nginx.prod.conf
+          # source: .
+          source: infra/docker-compose.prod.yml, infra/nginx.prod.conf
           target: .
           overwrite: true
       - name: executing remote ssh commands to deploy
@@ -86,36 +86,36 @@ jobs:
           host: ${{ secrets.CLOUD_HOST }}
           username: ${{ secrets.CLOUD_HOST_USER }}
           key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd infra
-            sudo docker-compose -f docker-compose.prod.yml stop $(sudo docker ps -a -q)
-            sudo docker-compose -f docker-compose.prod.yml rm -f
-            sudo docker-compose -f docker-compose.prod.yml up -d
           # script: |
-          #   sudo rm -Rf backend
-          #   sudo mkdir -p ./backend/envfiles/
-          #   sudo touch ./backend/envfiles/.env.prod
-          #   sudo echo "DEBUG=${{ secrets.DEBUG }}" >> backend/envfiles/.env.prod
-          #   sudo echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_ENGINE=${{ secrets.SQL_ENGINE }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_DATABASE=${{ secrets.SQL_DATABASE }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_USER=${{ secrets.SQL_USER }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_HOST=${{ secrets.SQL_HOST }}" >> ./backend/envfiles/.env.prod
-          #   echo "SQL_PORT=${{ secrets.SQL_PORT }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SU_USERNAME=${{ secrets.DJANGO_SU_USERNAME }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SU_EMAIL=${{ secrets.DJANGO_SU_EMAIL }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SU_PASSWORD=${{ secrets.DJANGO_SU_PASSWORD }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SU_FIRST_NAME=${{ secrets.DJANGO_SU_FIRST_NAME }}" >> ./backend/envfiles/.env.prod
-          #   echo "DJANGO_SU_LAST_NAME=${{ secrets.DJANGO_SU_LAST_NAME }}" >> ./backend/envfiles/.env.prod
           #   cd infra
-          #   sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
-          #   sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
-          #   sudo docker-compose stop $(sudo docker ps -a -q)
-          #   sudo docker-compose rm -f
-          #   sudo docker-compose -f docker-compose.prod.yml up -d 
+          #   sudo docker-compose -f docker-compose.prod.yml stop $(sudo docker ps -a -q)
+          #   sudo docker-compose -f docker-compose.prod.yml rm -f
+          #   sudo docker-compose -f docker-compose.prod.yml up -d
+          script: |
+            sudo rm -Rf backend
+            mkdir -p ./backend/envfiles/
+            touch ./backend/envfiles/.env.prod
+            echo "DEBUG=${{ secrets.DEBUG }}" >> backend/envfiles/.env.prod
+            sudo echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SETTINGS_MODULE=${{ secrets.DJANGO_SETTINGS_MODULE }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_ENGINE=${{ secrets.SQL_ENGINE }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_DATABASE=${{ secrets.SQL_DATABASE }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_USER=${{ secrets.SQL_USER }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_PASSWORD=${{ secrets.SQL_PASSWORD }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_HOST=${{ secrets.SQL_HOST }}" >> ./backend/envfiles/.env.prod
+            echo "SQL_PORT=${{ secrets.SQL_PORT }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SU_USERNAME=${{ secrets.DJANGO_SU_USERNAME }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SU_EMAIL=${{ secrets.DJANGO_SU_EMAIL }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SU_PASSWORD=${{ secrets.DJANGO_SU_PASSWORD }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SU_FIRST_NAME=${{ secrets.DJANGO_SU_FIRST_NAME }}" >> ./backend/envfiles/.env.prod
+            echo "DJANGO_SU_LAST_NAME=${{ secrets.DJANGO_SU_LAST_NAME }}" >> ./backend/envfiles/.env.prod
+            cd infra
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/backend_foodgram
+            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/frontend_foodgram
+            sudo docker-compose stop $(sudo docker ps -a -q)
+            sudo docker-compose rm -f
+            sudo docker-compose -f docker-compose.prod.yml up -d 
 
   send_message:
     runs-on: ubuntu-latest
