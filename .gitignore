@@ -26,7 +26,7 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
-media/*
+media/
 static_django/
 
 # PyInstaller
@@ -105,13 +105,14 @@ celerybeat.pid
 
 # Environments
 .env
+.env.*
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
-*/envfiles/
+
 
 # Spyder project settings
 .spyderproject
