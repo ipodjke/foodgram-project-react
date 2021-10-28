@@ -27,6 +27,7 @@ services:
     image: ipodjke/backend_foodgram:latest
     command: gunicorn config.wsgi:application --bind 0.0.0.0:8000
     volumes:
+      - ../.env:/usr/src/app/web/envfiles/.env.prod
       - ../data:/usr/src/app/data
       - static_value:/usr/src/app/web/static_django/
       - media_value:/usr/src/app/web/media/
