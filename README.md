@@ -1,6 +1,6 @@
 # Foodgram, «Продуктовый помощник»
 
-![Build Status](https://github.com/ipodjke/foodgram-project-react/actions/workflows/main.yaml/badge.svg?branch=master)
+![Build Status](https://github.com/ipodjke/foodgram-project-react/actions/workflows/main.yml/badge.svg?branch=master)
 
 На этом сервисе пользователи смогут публиковать рецепты, подписываться на публикации других пользователей, добавлять понравившиеся рецепты в список «Избранное», а перед походом в магазин скачивать сводный список продуктов, необходимых для приготовления одного или нескольких выбранных блюд.
 
