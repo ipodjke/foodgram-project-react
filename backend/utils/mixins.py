@@ -1,3 +1,6 @@
+from rest_framework import mixins, viewsets
+
+
 class DisableUslessDjoserActionMixin():
     def activation(self, request, *args, **kwargs):
         pass
@@ -19,3 +22,9 @@ class DisableUslessDjoserActionMixin():
 
     def reset_username_confirm(self, request, *args, **kwargs):
         pass
+
+
+class ListRetriveViewSet(mixins.ListModelMixin,
+                         mixins.RetrieveModelMixin,
+                         viewsets.GenericViewSet):
+    pass

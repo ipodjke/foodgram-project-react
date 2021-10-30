@@ -1,7 +1,9 @@
 from django.conf import settings
+
 from django_filters.rest_framework import FilterSet, filters
-from recipes.models import Recipe
 from rest_framework.filters import BaseFilterBackend, SearchFilter
+
+from recipes.models import Recipe
 from tags.models import Tag
 
 

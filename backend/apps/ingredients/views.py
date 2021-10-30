@@ -1,5 +1,5 @@
 from utils.filters import DoubleSearchBackend
-from utils.views import ListRetriveViewSet
+from utils.mixins import ListRetriveViewSet
 
 from .models import Ingredient
 from .serializers import IngredientSerializer

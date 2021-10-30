@@ -4,7 +4,7 @@ from .base import *
 
 DEBUG = int(os.environ.get('DEBUG', default=1))
 
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '0.0.0.0').split(' ')
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '0.0.0.0').split()
 
 DATABASES = {
     'default': {

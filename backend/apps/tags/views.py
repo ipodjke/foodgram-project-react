@@ -1,4 +1,4 @@
-from utils.views import ListRetriveViewSet
+from utils.mixins import ListRetriveViewSet
 
 from .models import Tag
 from .serializers import TagSerializer

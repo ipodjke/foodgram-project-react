@@ -1,6 +1,27 @@
+"""Загрузка ингредиентов в базу данных.
+
+Определена дополнительная django команда ./manage.py load_ingredients.
+Необходима для загрузки даннах из файла data/ingredients.csv
+(содержитсписок ингредиентов проекта) в базу данных проекта.
+Используется при сборке docker образа.
+
+Использование:
+    Cоздать структура проекта ввида:
+        project
+        |______backend(этот проект)
+        |
+        |______data/ingredients.csv
+
+    Cтуктура файла ingredients.csv:
+        product_name,measurement_unit
+
+    Команда запуска:
+        ./manage.py load_ingredients
+"""
 import csv
 
 from django.core.management.base import BaseCommand
+
 from ingredients.models import Ingredient
 
 

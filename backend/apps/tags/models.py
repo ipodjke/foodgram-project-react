@@ -16,8 +16,6 @@ class Tag(models.Model):
                 message='Введите корректное значение HEX кода цвета')
         ],
         verbose_name='Цвет тега',
-        help_text=('Цвет указывается в шестнадцатиричной форме '
-                   '(поддерживает 3х значный ввод)')
     )
     slug = models.SlugField(
         max_length=200,

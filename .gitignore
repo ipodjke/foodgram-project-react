@@ -139,5 +139,5 @@ dmypy.json
 .vscode/
 
 #Data
-db.json
-ingredients.json
+data/db.json
+data/ingredients.json

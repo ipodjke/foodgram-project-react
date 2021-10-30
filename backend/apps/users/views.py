@@ -1,11 +1,13 @@
 from django.conf import settings as django_settings
 from django.contrib.auth import get_user_model
+
 from djoser.conf import settings
 from djoser.views import UserViewSet as DjoserUserViewSet
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
 from utils.generalizing_functions import (check_the_occurrence,
                                           send_bad_request_response)
 from utils.mixins import DisableUslessDjoserActionMixin

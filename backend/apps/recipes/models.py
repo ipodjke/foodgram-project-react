@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+
 from ingredients.models import Ingredient
 from tags.models import Tag
 
@@ -43,7 +44,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
-        ordering = ['-publication_date']
+        ordering = ('-publication_date',)
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
 
