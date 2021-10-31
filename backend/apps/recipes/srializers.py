@@ -74,6 +74,31 @@ class CreateRecipeSerializer(serializers.ModelSerializer):
         model = Recipe
         exclude = ('author',)
 
+    def validate_ingredients(self, value):
+        unique_ingredients = []
+        for data_ingredient in value:
+
+            ingredient = get_object_or_404(
+                Ingredient,
+                id=data_ingredient.get('id')
+            )
+
+            if ingredient in unique_ingredients:
+                raise serializers.ValidationError(
+                    f'Дублируется {ingredient.name}, пожалуйста оставьте один'
+                    ' ингредиент.'
+                )
+
+            unique_ingredients.append(ingredient)
+
+            if int(data_ingredient.get('amount')) < 0:
+                raise serializers.ValidationError(
+                    'Вы велли не корректное значение ('
+                    f'{data_ingredient.get("amount")}) для {ingredient.name}'
+                )
+
+        return value
+
     def create(self, validated_data):
         tags = self._get_tags(validated_data)
         ingredients = self._get_ingredients(validated_data)

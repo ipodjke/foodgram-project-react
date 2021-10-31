@@ -13,6 +13,7 @@ django-filter = "*"
 drf-extra-fields = "*"
 pillow = "*"
 gunicorn = "*"
+reportlab = "*"
 
 [dev-packages]
 flake8 = "*"

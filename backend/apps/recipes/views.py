@@ -1,9 +1,15 @@
-import csv
+import io
 
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import FileResponse
 
+import reportlab
 from django_filters.rest_framework import DjangoFilterBackend
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import cm
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import (IsAuthenticated,
@@ -177,7 +183,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         Отправить свормированый файл.
 
-        Формирует файл(txt) на онсове ingredient_list и отправляет его
+        Формирует файл(pdf) на онсове ingredient_list и отправляет его
 
         ------
         Параметры:
@@ -185,16 +191,41 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 {имя (единица измерения): колличество}
         -----
         Выходное значение:
-            object - HttpRespone
+            object - FileResponse
         """
-        response = HttpResponse(content_type='text/txt')
-        response['Content-Disposition'] = ('attachment; '
-                                           'filename="ingredients_list.txt"')
+        reportlab.rl_config.TTFSearchPath.append(
+            str(settings.BASE_DIR) + '/utils/fonts/'
+        )
+        pdfmetrics.registerFont(TTFont('Roboto', 'Roboto.ttf'))
 
-        writer = csv.writer(response)
-        writer.writerow(['Общий список ингредиентов!'])
-        writer.writerow([])
+        buffer = io.BytesIO()
+        p = canvas.Canvas(
+            buffer,
+            pagesize=A4,
+            initialFontName='Roboto',
+            initialFontSize=18
+        )
+
+        margin_top = 27 * cm
+        margint_top_header = margin_top - 3 * cm
+        left_margin = 1 * cm
+
+        p.drawString(6.5 * cm, margin_top, 'Общий список ингредиентов!')
+        p.setFontSize(16)
+
         for ingredient, amount in ingredient_list.items():
-            writer.writerow([f'{ingredient} - {amount}'])
+            p.drawString(
+                left_margin,
+                margint_top_header,
+                f'{ingredient} - {amount}'
+            )
+            margint_top_header -= cm
 
-        return response
+        p.showPage()
+        p.save()
+        buffer.seek(0)
+        return FileResponse(
+            buffer,
+            as_attachment=True,
+            filename='product_list.pdf'
+        )
